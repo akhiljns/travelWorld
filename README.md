@@ -4,9 +4,11 @@
 requirements - 
 maven
 java
+git
 
 ## steps to build the project and run it:
 ```
+- git clone https://github.com/akhiljns/travelWorld.git
 - mvn clean install
 - mvn exec:java -D exec.mainClass=./target/classes/com/travelworld/App.class
 ```
