@@ -74,7 +74,7 @@ public class App {
                 System.out.print(tspCandidates[b].getContId());
                 System.out.print(")");
                 if (b < n - 1) {
-                    System.out.print("-->");
+                    System.out.print(" --> ");
                 }
             }
 

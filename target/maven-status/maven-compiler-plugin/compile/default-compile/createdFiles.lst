@@ -1,0 +1,6 @@
+com\travelworld\App.class
+com\travelworld\model\City.class
+com\travelworld\model\LeastCityChoice.class
+com\travelworld\model\Location.class
+com\travelworld\model\CityList.class
+com\travelworld\model\Continent.class
