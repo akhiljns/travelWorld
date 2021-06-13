@@ -2,11 +2,12 @@ package com.travelworld;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -92,6 +93,28 @@ public class App {
 
     }
 
+    public static <K, V extends Comparable<? super V>> Map<String, LeastCityChoice> sortByValues(
+            final Map<String, LeastCityChoice> map, final City c) {
+        Comparator<String> valueComparator = new Comparator<String>() {
+            @Override
+            public int compare(String e1, String e2) {
+                if (getDistanceBtwTwoCities(c.getLocation(),
+                        map.get(e1).getCity().getLocation()) == getDistanceBtwTwoCities(c.getLocation(),
+                                map.get(e2).getCity().getLocation())) {
+                    return 0;
+                }
+
+                boolean res = getDistanceBtwTwoCities(c.getLocation(), map.get(e1).getCity()
+                        .getLocation()) > getDistanceBtwTwoCities(c.getLocation(), map.get(e2).getCity().getLocation());
+                return res ? 1 : -1;
+            }
+        };
+
+        Map<String, LeastCityChoice> sortedByValues = new TreeMap<>(valueComparator);
+        sortedByValues.putAll(map);
+        return sortedByValues;
+    }
+
     /**
      * this function find the local minima, calculates city with least distance from
      * starting city in every continent
@@ -108,7 +131,7 @@ public class App {
      */
     static Map<String, LeastCityChoice> getCitiesForTsp(CityList cities, City startCity) {
 
-        Map<String, LeastCityChoice> continentCityMap = new LinkedHashMap<>();
+        Map<String, LeastCityChoice> continentCityMap = new TreeMap<>();
 
         continentCityMap.put(startCity.getContId(), new LeastCityChoice(startCity, 0));
 
@@ -126,7 +149,7 @@ public class App {
             }
         }
 
-        return continentCityMap;
+        return sortByValues(continentCityMap, startCity);
 
     }
 
